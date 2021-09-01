@@ -1,0 +1,10 @@
+.ant-btn-default {
+  background: transparent !important;
+  border: none !important;
+  color: white !important;
+}
+
+.ant-btn-default:hover {
+  transition: 0.5s all !important;
+  color: #40a9ff !important;
+}

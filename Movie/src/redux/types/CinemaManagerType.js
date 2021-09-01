@@ -1,0 +1,1 @@
+export const GET_INFO_CINEMA = "GET_INFO_CINEMA";
