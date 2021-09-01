@@ -37,9 +37,7 @@ const EditUser = (props) => {
   const history = useHistory();
   const username = props.match.params.name;
   const { userList } = useSelector((state) => state.UserManagerReducer);
-  const userEdit = userList?.filter((user) => user.taiKhoan === username);
-  const { taiKhoan, hoTen, email, maLoaiNguoiDung, matKhau, soDt } =
-    userEdit[0];
+  const userEdit = userList?.filter((user) => user?.taiKhoan === username);
   useEffect(() => {
     dispatch(getUserListAction(username));
   }, [username, dispatch]);
@@ -53,13 +51,13 @@ const EditUser = (props) => {
     handleBlur,
   } = useFormik({
     initialValues: {
-      taiKhoan: taiKhoan,
-      matKhau: matKhau,
-      email: email,
-      soDt: soDt,
+      taiKhoan: userEdit[0]?.taiKhoan,
+      matKhau: userEdit[0]?.matKhau,
+      email: userEdit[0]?.email,
+      soDt: userEdit[0]?.soDt,
       maNhom: "GP01",
-      maLoaiNguoiDung: maLoaiNguoiDung,
-      hoTen: hoTen,
+      maLoaiNguoiDung: userEdit[0]?.maLoaiNguoiDung,
+      hoTen: userEdit[0]?.hoTen,
     },
     validationSchema: schemaUser,
     validateOnMount: true,
@@ -103,7 +101,7 @@ const EditUser = (props) => {
             onBlur={handleBlur}
             className="form-item"
           >
-            <Input defaultValue={taiKhoan} />
+            <Input defaultValue={values.taiKhoan} />
           </Form.Item>
           {touched.taiKhoan && <p>{errors.taiKhoan}</p>}
         </div>
@@ -115,7 +113,7 @@ const EditUser = (props) => {
           onBlur={handleBlur}
           className="form-item"
         >
-          <Input defaultValue={matKhau} />
+          <Input defaultValue={values.matKhau} />
         </Form.Item>
         {touched.matKhau && <p>{errors.matKhau}</p>}
         <Form.Item
@@ -125,7 +123,7 @@ const EditUser = (props) => {
           onBlur={handleBlur}
           className="form-item"
         >
-          <Input defaultValue={hoTen} />
+          <Input defaultValue={values.hoTen} />
         </Form.Item>
         {touched.hoTen && <p>{errors.hoTen}</p>}
         <Form.Item
@@ -135,7 +133,7 @@ const EditUser = (props) => {
           onBlur={handleBlur}
           className="form-item"
         >
-          <Input defaultValue={email} />
+          <Input defaultValue={values.email} />
         </Form.Item>
         {touched.email && <p>{errors.email}</p>}
         <Form.Item
@@ -145,7 +143,7 @@ const EditUser = (props) => {
           onBlur={handleBlur}
           className="form-item"
         >
-          <Input defaultValue={soDt} />
+          <Input defaultValue={values.soDt} />
         </Form.Item>
         {touched.soDt && <p>{errors.soDt}</p>}
         <Form.Item
@@ -162,7 +160,7 @@ const EditUser = (props) => {
         <Form.Item label="Mã loại người dùng :" style={{ paddingTop: "20px" }}>
           <Select
             style={{ width: 120 }}
-            placeholder="Click chọn"
+            defaultValue={values.maLoaiNguoiDung}
             name="maLoaiNguoiDung"
             onChange={(value) => setFieldValue("maLoaiNguoiDung", value)}
           >
