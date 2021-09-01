@@ -12,7 +12,6 @@ const initialState = {
 export const LoginReducer = (state = initialState, { type, payload }) => {
   switch (type) {
     case SET_LOGIN: {
-      console.log(state.adminLogin);
       state.adminLogin = payload;
       return { ...state };
     }

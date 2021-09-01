@@ -16,6 +16,32 @@ const schemaUser = yup.object().shape({
 export const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+  const loginSuccess = () => {
+    message.success({
+      content: "Đăng nhập thành công",
+      style: { color: "blue", marginTop: "20vh" },
+      duration: 1.5,
+    });
+  };
+  const loginError = () => {
+    message.error({
+      content: "Tài khoản hoặc mật khẩu không đúng !!",
+      style: { color: "red", marginTop: "20vh" },
+      duration: 1.5,
+    });
+  };
+
+  const impossibleLogin = () => {
+    message.error({
+      content: "Bạn không có quyền truy cập vào trang admin !!",
+      style: { color: "red", marginTop: "20vh" },
+      duration: 1.5,
+    });
+  };
+
+  const nextPage = () => {
+    history.push("/admin");
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -24,19 +50,10 @@ export const Login = () => {
     dispatch(
       LoginAction(
         formik.values,
-        () =>
-          message.success({
-            content: "Đăng nhập thành công",
-            style: { color: "blue", marginTop: "20vh" },
-            duration: 1.5,
-          }),
-        () =>
-          message.error({
-            content: "Tài khoản hoặc mật khẩu không đúng !!",
-            style: { color: "red", marginTop: "20vh" },
-            duration: 1.5,
-          }),
-        () => history.push("/admin")
+        loginSuccess,
+        loginError,
+        impossibleLogin,
+        nextPage
       )
     );
   };

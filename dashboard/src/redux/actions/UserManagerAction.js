@@ -13,13 +13,14 @@ export const getUserListAction = (username = "") => {
   };
 };
 
-export const addUserAction = (info, callback1, callback2) => {
+export const addUserAction = (info, addSuccess, addError, nextPage) => {
   return async () => {
     try {
       await userManager.addUser(info);
-      callback1();
-      callback2();
+      addSuccess();
+      nextPage();
     } catch (error) {
+      addError();
       console.log(error);
     }
   };
@@ -36,26 +37,32 @@ export const searchUserAction = (name) => {
   };
 };
 
-export const deleteUserAction = (username, callback) => {
+export const deleteUserAction = (username, deleteSuccess, deleteError) => {
   return async (dispatch) => {
     try {
       await userManager.deleteUser(username);
-      dispatch(getUserListAction);
-      callback();
+      dispatch(getUserListAction());
+      deleteSuccess();
     } catch (error) {
+      deleteError();
       console.log(error);
     }
   };
 };
 
-export const updateUserActioon = (username, callback, callback2) => {
+export const updateUserActioon = (
+  username,
+  updateSuccess,
+  updateError,
+  nextPage
+) => {
   return async () => {
     try {
       await userManager.updateUser(username);
-      callback();
-      callback2();
+      updateSuccess();
+      nextPage();
     } catch (error) {
-      alert("cập nhật thất bại");
+      updateError();
       console.log(error);
     }
   };

@@ -1,7 +1,7 @@
 import { Button, Form, Input, message, Select } from "antd";
 import { Option } from "antd/lib/mentions";
 import { useFormik } from "formik";
-import React, { useEffect } from "react";
+import React, { memo, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as yup from "yup";
@@ -37,13 +37,12 @@ const EditUser = (props) => {
   const history = useHistory();
   const username = props.match.params.name;
   const { userList } = useSelector((state) => state.UserManagerReducer);
-
+  const userEdit = userList?.filter((user) => user.taiKhoan === username);
   const { taiKhoan, hoTen, email, maLoaiNguoiDung, matKhau, soDt } =
-    userList[0];
-  console.log(userList);
+    userEdit[0];
   useEffect(() => {
     dispatch(getUserListAction(username));
-  }, []);
+  }, [username, dispatch]);
   const {
     handleChange,
     values,
@@ -67,22 +66,29 @@ const EditUser = (props) => {
     enableReinitialize: true,
   });
 
+  const updateSuccess = () => {
+    message.success({
+      content: "Cập nhật người dùng thành công",
+      style: { marginTop: "20px", color: "blue" },
+      duration: 1.5,
+    });
+  };
+
+  const updateError = () => {
+    message.error({
+      content: "Vui lòng nhập đúng thông tin ",
+      style: { marginTop: "20px", color: "red" },
+      duration: 1.5,
+    });
+  };
+  const nextPage = () => {
+    history.push("/admin/manager");
+  };
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
     if (!isValid) return;
-    dispatch(
-      updateUserActioon(
-        values,
-        () =>
-          message.success({
-            content: "Cập nhật người dùng thành công",
-            style: { marginTop: "20px", color: "blue" },
-            duration: 2,
-          }),
-        () => history.push("/admin/manager")
-      )
-    );
+    dispatch(updateUserActioon(values, updateSuccess, updateError, nextPage));
   };
   return (
     <ContentForm>
@@ -174,4 +180,4 @@ const EditUser = (props) => {
   );
 };
 
-export default EditUser;
+export default memo(EditUser);

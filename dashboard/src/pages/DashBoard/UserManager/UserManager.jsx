@@ -1,14 +1,14 @@
-import { Button, Input, message, Table } from "antd";
-import { Fragment, useEffect, useState } from "react";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Input, message, Table } from "antd";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import {
   deleteUserAction,
   getUserListAction,
   searchUserAction,
 } from "../../../redux/actions/UserManagerAction";
 import { ButtonContent, Content } from "./style";
-import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
-import { useHistory } from "react-router-dom";
 
 const UserManager = () => {
   const dispatch = useDispatch();
@@ -24,6 +24,22 @@ const UserManager = () => {
     } else dispatch(getUserListAction());
   }, [dispatch, valueSearch]);
   const { Search } = Input;
+  const deleteSuccess = () => {
+    message.success({
+      content: "Xóa người dùng thành công",
+      style: { marginTop: "20px", color: "blue" },
+      duration: 1.5,
+    });
+  };
+
+  const deleteError = () => {
+    message.error({
+      content: "Xóa người thất bại",
+      style: { marginTop: "20px", color: "red" },
+      duration: 1.5,
+    });
+  };
+
   const columns = [
     {
       title: "Họ Tên",
@@ -59,13 +75,7 @@ const UserManager = () => {
               onClick={() => {
                 window.confirm("Bạn có muốn xóa tài khoản này không");
                 dispatch(
-                  deleteUserAction(user.taiKhoan, () =>
-                    message.success({
-                      content: "Xóa người dùng thành công",
-                      style: { marginTop: "20px", color: "blue" },
-                      duration: 1.5,
-                    })
-                  )
+                  deleteUserAction(user.taiKhoan, deleteSuccess, deleteError)
                 );
               }}
             />

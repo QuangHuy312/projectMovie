@@ -11,12 +11,12 @@ const schemaUser = yup.object().shape({
   taiKhoan: yup
     .string()
     .required("*UserName is Required")
-    .min(8, "*Username must have 8-15 characters")
-    .max(16, "*Username must have 8-15 characters"),
+    .min(6, "*Username must have 6-18 characters")
+    .max(18, "*Username must have 6-18 characters"),
   matKhau: yup
     .string()
     .required("*Password is Required")
-    .min(7, "*Password must have 7 characters"),
+    .min(6, "*Password must have 6 characters"),
   email: yup.string().required("*Email is Required").email("*Email is Invalid"),
   soDt: yup
     .string()
@@ -31,26 +31,30 @@ const schemaUser = yup.object().shape({
 export const SignUp = () => {
   const dispatch = useDispatch();
   const history = useHistory();
+
+  const signUpSuccess = () => {
+    message.success({
+      content: "Đăng ký thành công !!!",
+      style: { marginTop: "20vh" },
+      duration: 1,
+    });
+  };
+  const signUpError = () => {
+    message.error({
+      content: "Tài khoản đã tồn tại !!!",
+      style: { marginTop: "20vh", color: "red" },
+      duration: 1,
+    });
+  };
+
+  const nextPage = () => {
+    history.push("/signin");
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
     if (!formik.isValid) return;
     dispatch(
-      SetUserSignUp(
-        formik.values,
-        () =>
-          message.success({
-            content: "Đăng ký thành công !!!",
-            style: { marginTop: "20vh" },
-            duration: 1,
-          }),
-        () =>
-          message.error({
-            content: "Tài khoản đã tồn tại !!!",
-            style: { marginTop: "20vh", color: "red" },
-            duration: 1,
-          }),
-        () => history.push("/signin")
-      )
+      SetUserSignUp(formik.values, signUpSuccess, signUpError, nextPage)
     );
   };
 

@@ -1,12 +1,12 @@
-import { Button, Form, Input, Select, message } from "antd";
-import { Formik, useFormik } from "formik";
-import React from "react";
-import { ContentForm } from "./style";
-import * as yup from "yup";
+import { Button, Form, Input, message, Select } from "antd";
 import { Option } from "antd/lib/mentions";
+import { useFormik } from "formik";
+import React from "react";
 import { useDispatch } from "react-redux";
-import { addUserAction } from "../../../redux/actions/UserManagerAction";
 import { useHistory } from "react-router-dom";
+import * as yup from "yup";
+import { addUserAction } from "../../../redux/actions/UserManagerAction";
+import { ContentForm } from "./style";
 
 const schemaUser = yup.object().shape({
   taiKhoan: yup
@@ -54,22 +54,30 @@ const AddNewUser = () => {
     validateOnMount: true,
   });
 
+  const addSuccess = () => {
+    message.success({
+      content: "Thêm người dùng thành công",
+      style: { marginTop: "20px", color: "blue" },
+      duration: 1.5,
+    });
+  };
+  const addError = () => {
+    message.error({
+      content: "Tài khoản hoặc gmail đã có người sử dụng ",
+      style: { marginTop: "20px", color: "blue" },
+      duration: 1.5,
+    });
+  };
+
+  const nextPage = () => {
+    history.push("/admin/manager");
+  };
+
   const handleSubmitForm = (e) => {
     e.preventDefault();
 
     if (!isValid) return;
-    dispatch(
-      addUserAction(
-        values,
-        () =>
-          message.success({
-            content: "Thêm người dùng thành công",
-            style: { marginTop: "20px", color: "blue" },
-            duration: 2,
-          }),
-        () => history.push("/admin/manager")
-      )
-    );
+    dispatch(addUserAction(values, addSuccess, addError, nextPage));
   };
 
   return (

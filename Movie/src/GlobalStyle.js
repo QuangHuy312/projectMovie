@@ -11,12 +11,13 @@ export const GlobalStyle = createGlobalStyle`
   }
 * {
   box-sizing: border-box;
+  text-decoration: none;
+  list-style-type: none;
 }
 body{
     margin: 0;
   padding: 0;
-  text-decoration: none;
-  list-style-type: none;
+ 
   h1{
       font-size: 2rem;
     color:#fff;

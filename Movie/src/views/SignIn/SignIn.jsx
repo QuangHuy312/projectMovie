@@ -12,7 +12,7 @@ const schemaUser = yup.object().shape({
     .string()
     .required("*UserName is Required")
     .min(6, "*Username must have 6-15 characters")
-    .max(15, "*Username must have 6-15 characters"),
+    .max(18, "*Username must have 6-18 characters"),
   matKhau: yup
     .string()
     .required("*Password is Required")
@@ -23,29 +23,30 @@ export const SignIn = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  const loginSuccess = () => {
+    message.success({
+      content: "Đăng nhập thành công !!!",
+      style: { marginTop: "20vh", color: "red" },
+      duration: 1.5,
+    });
+  };
+  const loginError = () => {
+    message.error({
+      content: "Tài khoản hoặc mật khẩu không đúng !!!",
+      style: { marginTop: "20vh", color: "red" },
+      duration: 1.5,
+    });
+  };
+  const nextPage = () => {
+    history.push("/");
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
 
     if (!formik.isValid) return;
 
-    dispatch(
-      SetUserLogin(
-        formik.values,
-        () =>
-          message.success({
-            content: "Đăng nhập thành công !!!",
-            style: { marginTop: "20vh", color: "red" },
-            duration: 0.5,
-          }),
-        () =>
-          message.error({
-            content: "Tài khoản hoặc mật khẩu không đúng !!!",
-            style: { marginTop: "20vh", color: "red" },
-            duration: 1,
-          }),
-        () => history.push("/")
-      )
-    );
+    dispatch(SetUserLogin(formik.values, loginSuccess, loginError, nextPage));
   };
 
   const formik = useFormik({

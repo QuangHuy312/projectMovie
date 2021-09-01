@@ -3,29 +3,29 @@ import { TOKEN } from "../../util/setting/config";
 import { SET_USER_LOGIN } from "../types/UserManagerType";
 import { createAction } from "./createAction/createAction";
 
-export const SetUserSignUp = (info, callback, callback2, callback3) => {
-  return async (dispatch) => {
+export const SetUserSignUp = (info, signUpSuccess, signUpError, nextPage) => {
+  return async () => {
     try {
       await userService.setUserSignUp(info);
-      callback();
-      callback3();
+      signUpSuccess();
+      nextPage();
     } catch (error) {
-      callback2();
+      signUpError();
       console.log(error);
     }
   };
 };
 
-export const SetUserLogin = (user, callback, callback2, callback3) => {
+export const SetUserLogin = (user, loginSuccess, loginError, nextPage) => {
   return async (dispatch) => {
     try {
       const { data } = await userService.setUserLogin(user);
       dispatch(createAction(SET_USER_LOGIN, data.content));
       localStorage.setItem(TOKEN, data.content.accessToken);
-      callback();
-      callback3();
+      loginSuccess();
+      nextPage();
     } catch (error) {
-      callback2();
+      loginError();
       console.log(error);
     }
   };
