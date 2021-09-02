@@ -22,7 +22,7 @@ const App = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <HomeTemPlate path="/home" Component={Home} exact />
+        <HomeTemPlate path="/page/:number" Component={Home} exact />
         <HomeTemPlate path="/detail/:id" Component={Detail} exact />
         <Route path="/profile" component={Profile} exact />
         <Route path="/signin" component={SignIn} exact />

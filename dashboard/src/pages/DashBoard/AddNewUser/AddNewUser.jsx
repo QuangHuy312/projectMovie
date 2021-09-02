@@ -143,7 +143,7 @@ const AddNewUser = () => {
           label="Mã Nhóm :"
           onChange={handleChange}
           onBlur={handleBlur}
-          className="form-item"
+          className="form-item" 
         >
           <Input />
         </Form.Item>

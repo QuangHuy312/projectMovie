@@ -11,7 +11,7 @@ import {
 import ScrollFilm from "../ScrollFilm/ScrollFilm";
 import { useHistory } from "react-router-dom";
 
-const Movies = ({ arrFilm, setPage }) => {
+const Movies = ({ arrFilm, currentPage }) => {
   const history = useHistory();
   return (
     <Fragment>
@@ -35,11 +35,13 @@ const Movies = ({ arrFilm, setPage }) => {
               </Fragment>
             ))}
           </MovieList>
+
           <Pagination
+            defaultCurrent={currentPage}
             pageSize={arrFilm?.count}
             total={arrFilm?.totalCount}
             onChange={(page) => {
-              setPage(page);
+              history.push({ pathname: `/page/${page}` });
             }}
             className="page"
           />

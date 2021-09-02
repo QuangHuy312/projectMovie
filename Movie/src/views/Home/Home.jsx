@@ -7,14 +7,14 @@ import {
   GetMovieFilmAction,
 } from "../../redux/actions/MovieManagerAction";
 
-const Home = () => {
-  const [page, setPage] = useState(1);
+const Home = (props) => {
+  const page = props.match.params.number;
   const dispatch = useDispatch();
   const { arrFilm } = useSelector((state) => state.MovieManagerReducer);
   const { arrBanner } = useSelector((state) => state.MovieManagerReducer);
   const managerFilm = useCallback(() => {
     dispatch(GetBannerFilmAction);
-    dispatch(GetMovieFilmAction(page));
+    page ? dispatch(GetMovieFilmAction(page)) : dispatch(GetMovieFilmAction(1));
   }, [page, dispatch]);
   useEffect(() => {
     managerFilm();
@@ -22,7 +22,7 @@ const Home = () => {
   return (
     <div style={{ backgroundColor: "var(--bgDark" }}>
       <HomeCarousel arrBanner={arrBanner} />
-      <Movies arrFilm={arrFilm} setPage={setPage} />
+      <Movies arrFilm={arrFilm} currentPage={page} />
     </div>
   );
 };
